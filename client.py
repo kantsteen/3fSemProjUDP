@@ -11,6 +11,6 @@ with Serial("/dev/ttyAMA0", baudrate = 9600, timeout = 1) as ser:
     print("Reads raw GPS data and sends via UDP...")
     while True:
         line = ser.readline().decode('ascii', errors = 'ignore').strip()
-        if line.startswith('$'):  # Tjek om det er en NMEA-sætning
+        if line.startswith('$GPRMC'):  # Tjek om det er en NMEA-sætning
             print("Sender:", line)
             sock.sendto(line.encode(), (UDP_IP, UDP_PORT)) 
