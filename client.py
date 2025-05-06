@@ -1,13 +1,13 @@
 from socket import * 
-import serial
+from serial import *
 
 serverName= '255.255.255.255' #Change to Azure server
 serverPort=12000
-sock= socket(AF_INET, SOCK_DGRAM)
+sock = socket(AF_INET, SOCK_DGRAM)
 sock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1) #Enable broadcast
 
 # Serielforbindelse til GPS
-with serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=1) as ser:
+with Serial("/dev/ttyAMA0", baudrate=9600, timeout=1) as ser:
     print("Reads raw GPS data and sends over UDP...")
     while True:
         line = ser.readline().decode('ascii', errors='ignore').strip()
