@@ -72,7 +72,8 @@ while True:
     print(parse_gprmc(modifiedMessage))
 
     
+
     
-    serverSocket.sendto(modifiedMessage.encode(), clientAddress)
+    
 
 
