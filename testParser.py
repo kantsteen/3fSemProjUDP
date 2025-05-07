@@ -1,23 +1,10 @@
-from socket import *
 from datetime import datetime, timedelta
 
-serverPort = 12000
-serverSocket = socket(AF_INET, SOCK_DGRAM)
-
-serverAddress = ('', serverPort)
-
-serverSocket.bind(serverAddress)
-print("The server is ready")
-while True:
-    message, clientAddress = serverSocket.recvfrom(2048)
-    # print("Received message:" + message.decode())
-    modifiedMessage = message.decode().upper()
-
-    testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
+testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
 
 
-    def parse_gprmc(modifiedMessage):
-        parts = modifiedMessage.split(',')
+def parse_gprmc(testString):
+        parts = testString.split(',')
         if parts[2] != 'A':
             print('Void data')
             return None
@@ -64,12 +51,5 @@ while True:
             return None
         
 
-    # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
 
-    # print(parse_gprmc(testString))
-
-
-    
-    serverSocket.sendto(parse_gprmc(modifiedMessage.encode()), clientAddress)
-
-
+print(parse_gprmc(testString))
