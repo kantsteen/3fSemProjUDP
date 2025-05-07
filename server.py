@@ -69,13 +69,16 @@ while True:
 
     # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
 
-    messageParsed = (parse_gprmc(messageDecoded))
+    # messageParsed = (parse_gprmc(messageDecoded))
 
-    serialized = json.dumps(messageParsed)
+    # serialized = json.dumps(messageParsed)
 
-    headersArray = {'Content-type': 'application/json'}
+    # headersArray = {'Content-type': 'application/json'}
 
-    response = requests.post("URL til vores REST service her", data = serialized, headers = headersArray)
+    # response = requests.post("URL til vores REST service her", data = serialized, headers = headersArray)
+
+    
+
 
     
 
