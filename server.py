@@ -1,5 +1,7 @@
 from socket import *
 from datetime import datetime, timedelta
+import json
+import requests
 
 serverPort = 12000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
@@ -9,15 +11,16 @@ serverAddress = ('', serverPort)
 serverSocket.bind(serverAddress)
 print("The server is ready")
 while True:
+    
     message, clientAddress = serverSocket.recvfrom(2048)
     print("Received message:" + message.decode())
-    modifiedMessage = message.decode().upper()
+    messageDecoded = message.decode()
 
-    testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
+    # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
 
 
-    def parse_gprmc(modifiedMessage):
-        parts = modifiedMessage.split(',')
+    def parse_gprmc(messageDecoded):
+        parts = messageDecoded.split(',')
         if parts[2] != 'A':
             print('Void data, no satellite fix')
             return None
@@ -29,7 +32,7 @@ while True:
 
             dt_utc = datetime.strptime(raw_date + raw_time[:6], "%d%m%y%H%M%S") # check %d if 'day' in datetime doesn't work
 
-            timestamp = dt_utc.isoformat() + "Z"
+            # timestamp = dt_utc.isoformat() + "Z"
 
 
             # converting to CEST
@@ -66,9 +69,14 @@ while True:
 
     # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
 
-    print(parse_gprmc(testString))
+    messageParsed = (parse_gprmc(messageDecoded))
 
-    
+    serialized = json.dumps(messageParsed)
+
+    headersArray = {'Content-type': 'application/json'}
+
+    response = requests.post("URL til vores REST service her", data = serialized, headers = headersArray)
+
     
 
     

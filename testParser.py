@@ -39,10 +39,10 @@ def parse_gprmc(testString):
             speed_knots = float(parts[7])
 
             return {
-                'timestamp': timestamp,
-                'latitude': latitude,
-                'longitude': longitude,
-                'speed_knots': speed_knots,
+                "timestamp": timestamp,
+                "latitude": latitude,
+                "longitude": longitude,
+                "speed_knots": speed_knots,
             }
 
 
