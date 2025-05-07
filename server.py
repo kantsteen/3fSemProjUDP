@@ -1,5 +1,8 @@
 from socket import *
 from datetime import datetime, timedelta
+import requests
+import json
+
 
 serverPort = 12000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
@@ -10,16 +13,16 @@ serverSocket.bind(serverAddress)
 print("The server is ready")
 while True:
     message, clientAddress = serverSocket.recvfrom(2048)
-    # print("Received message:" + message.decode())
+    print("Received message:" + message.decode())
     modifiedMessage = message.decode().upper()
 
-    testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
+    # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
 
 
     def parse_gprmc(modifiedMessage):
         parts = modifiedMessage.split(',')
         if parts[2] != 'A':
-            print('Void data')
+            print('Void data, no satellite fix')
             return None
         
         # date, time, lat, long
@@ -64,12 +67,12 @@ while True:
             return None
         
 
-    # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
+    testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
 
-    # print(parse_gprmc(testString))
-
+    print(parse_gprmc(modifiedMessage))
 
     
-    serverSocket.sendto(parse_gprmc(modifiedMessage.encode()), clientAddress)
+    
+    serverSocket.sendto(modifiedMessage.encode(), clientAddress)
 
 
