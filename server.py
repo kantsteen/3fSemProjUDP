@@ -10,7 +10,7 @@ serverSocket.bind(serverAddress)
 print("The server is ready")
 while True:
     message, clientAddress = serverSocket.recvfrom(2048)
-    print("Received message:" + message.decode())
+    # print("Received message:" + message.decode())
     modifiedMessage = message.decode().upper()
 
     def parse_gprmc(modifiedMessage):
@@ -55,6 +55,9 @@ while True:
         except Exception as e:
             print('Error while parsing', e)
             return None
+        
+
+    parse_gprmc(modifiedMessage)
 
         
 
