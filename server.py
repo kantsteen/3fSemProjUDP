@@ -1,5 +1,6 @@
 from socket import *
 from datetime import datetime, timedelta
+import requests
 
 serverPort = 12000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
@@ -12,8 +13,6 @@ while True:
     message, clientAddress = serverSocket.recvfrom(2048)
     # print("Received message:" + message.decode())
     modifiedMessage = message.decode().upper()
-
-    testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
 
 
     def parse_gprmc(modifiedMessage):
@@ -62,14 +61,10 @@ while True:
         except Exception as e:
             print('Error while parsing', e)
             return None
-        
-
-    # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
-
-    # print(parse_gprmc(testString))
-
 
     
     serverSocket.sendto(parse_gprmc(modifiedMessage.encode()), clientAddress)
+
+    
 
 
