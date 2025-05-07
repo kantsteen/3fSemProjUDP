@@ -66,11 +66,10 @@ while True:
 
     # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
 
-    # print(parse_gprmc(testString))
+    print(parse_gprmc(testString))
 
     
     
-    serverSocket.sendto(modifiedMessage.encode(), clientAddress)
 
     
 
