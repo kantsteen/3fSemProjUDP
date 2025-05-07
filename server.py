@@ -30,6 +30,26 @@ while True:
             dt_cest = dt_utc + timedelta(hours=2)
             timestamp = dt_cest.strftime("%Y-%m-%d %H:%H:%S") # check %d if 'day' in datetime doesn't work
 
+            lat_deg = int(parts[3][0:2])
+            lat_min = float(parts[3][2:])
+            latitude = lat_deg + lat_min / 60.0
+            if parts[4] == 'S':
+                latitude *= -1
+
+            lon_deg = int(parts[5][0:3])
+            lon_min = float(parts[5][3:])
+            longitude = lon_deg + lon_min / 60.0
+            if parts[6] == 'W':
+                longitude *= -1
+
+            speed_knots = float(parts[7])
+
+            return {
+                'timestamp': timestamp,
+                'latitude': latitude,
+                'longitude': longitude,
+                'speed_knots': speed_knots,
+            }
 
 
         except Exception as e:
