@@ -78,22 +78,21 @@ while True:
     # response = requests.post("URL til vores REST service her", data = serialized, headers = headersArray)
 
     
+    while True: 
+        message, clientAddress = serverSocket.recvfrom(2048)
+        modfiedMessage = message.decode().upper()
+        parsed_data = parse_gprmc(modfiedMessage)
 
-while True: 
-    message, clientAddress = serverSocket.recvfrom(2048)
-    modfiedMessage = message.decode().upper()
-    parse_data = parse_gprmc(modfiedMessage)
 
-
-    if parse_data:
-        try: 
-            respnse = requests.post("http://your-rest-endpoint/api/gps'", #  Replace this URL with your actual endpoint
-                json=parsed_data,
-                timeout=5
-            )
-            print(f"Sent to REST API. Status: {response.status_code}")
-        except Exception as e:
-            print(f"Failed to send data to REST API: {e}")
+        if parsed_data:
+            try: 
+                response = requests.post("http://your-rest-endpoint/api/gps'", json=parsed_data, timeout=5)
+            
+                print(f"Sent to REST API. Status: {response.status_code}")
+            except requests.RequestException as e:
+                print(f"Failed to send data to REST API: {e}")
+            except Exception as e:
+                print(f"Failed to send data to REST API: {e}")
     
     # print("Received message:" + message.decode())            
 
