@@ -12,5 +12,5 @@ with Serial("/dev/ttyAMA0", baudrate = 9600, timeout = 1) as ser:
     while True:
         line = ser.readline().decode('ascii', errors = 'ignore').strip()
         if line.startswith('$GPRMC'):
-            print("Sening:", line)
+            print("Sending:", line)
             sock.sendto(line.encode(), (UDP_IP, UDP_PORT)) 
