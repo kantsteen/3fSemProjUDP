@@ -36,12 +36,12 @@ def parse_gprmc(messageDecoded):
 
         dt_utc = datetime.strptime(raw_date + raw_time[:6], "%d%m%y%H%M%S") # check %d if 'day' in datetime doesn't work
 
-            # timestamp = dt_utc.isoformat() + "Z"
+        timestamp = dt_utc.isoformat() + "Z"
 
 
             # converting to CEST
-        dt_cest = dt_utc + timedelta(hours=2)
-        timestamp = dt_cest.isoformat() + "Z"
+        # dt_cest = dt_utc + timedelta(hours=2)     not needed - time converted in browser
+        # timestamp = dt_cest.isoformat() + "Z"
 
 
         lat_deg = int(parts[3][0:2])
@@ -88,11 +88,13 @@ while True:
     print("Received message:" + message.decode())
     messageDecoded = message.decode()
     modfiedMessage = messageDecoded.upper()
-    parsed_data = parse_gprmc(modfiedMessage)
+    parsed_data = parse_gprmc(messageDecoded)
 
 
     if parsed_data:
         try: 
+                print(">> Parsed payload:", parsed_data)
+
                 response = requests.post("https://restredning20250504122455.azurewebsites.net/api/GPS", json=parsed_data, timeout=5)
             
                 print(f"Sent to REST API. Status: {response.status_code}")
