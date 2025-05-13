@@ -20,7 +20,7 @@ from socket import *
 import time
 
 # Test string to send
-testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
+testString = "$GPRMC,074818.000,A,5537.8382,N,01204.6662,E,0.03,155.89,130525,,,A*65"
 
 # Server configuration
 UDP_IP = '255.255.255.255'  # For local testing, you might want to use your server's IP instead
