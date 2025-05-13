@@ -59,7 +59,7 @@ def parse_gprmc(messageDecoded):
         speed_knots = float(parts[7])
 
         return {
-                'id': 3,  
+                # 'id': 3,  
                 'timestamp': timestamp,
                 'latitude': latitude,
                 'longitude': longitude,
