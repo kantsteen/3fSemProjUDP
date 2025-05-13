@@ -3,7 +3,7 @@ from subprocess import Popen
 from signal import pause
 import os
 
-button = Button(17)
+button = Button(17, bounce_time=0.3)  # GPIO pin 17 with a debounce time of 0.3 seconds
 gps_process = None  # Track the GPS script process
 
 def toggle_script():
