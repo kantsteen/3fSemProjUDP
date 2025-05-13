@@ -3,68 +3,73 @@ from datetime import datetime, timedelta
 import json
 import requests
 
-serverPort = 12000
+serverPort = 5000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
 
 serverAddress = ('', serverPort)
 
+#testString1 =  { "id": 3, "timestamp": "2025-05-08T10:18:00Z", "latitude": 55.6775, "longitude": 12.5681, "speedKnots": 0.16}
+
+
+
 serverSocket.bind(serverAddress)
 print("The server is ready")
-while True:
-    
-    message, clientAddress = serverSocket.recvfrom(2048)
-    print("Received message:" + message.decode())
-    messageDecoded = message.decode()
+
+message, clientAddress = serverSocket.recvfrom(2048)
+print("Received message:" + message.decode())
+messageDecoded = message.decode()
 
     # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
+   
 
 
-    def parse_gprmc(messageDecoded):
-        parts = messageDecoded.split(',')
-        if parts[2] != 'A':
+def parse_gprmc(messageDecoded):
+    parts = messageDecoded.split(',')
+    if parts[2] != 'A':
             print('Void data, no satellite fix')
             return None
         
         # date, time, lat, long
-        try:
-            raw_time=parts[1]
-            raw_date=parts[9]
+    try:
+        raw_time=parts[1]
+        raw_date=parts[9]
 
-            dt_utc = datetime.strptime(raw_date + raw_time[:6], "%d%m%y%H%M%S") # check %d if 'day' in datetime doesn't work
+        dt_utc = datetime.strptime(raw_date + raw_time[:6], "%d%m%y%H%M%S") # check %d if 'day' in datetime doesn't work
 
             # timestamp = dt_utc.isoformat() + "Z"
 
 
             # converting to CEST
-            dt_cest = dt_utc + timedelta(hours=2)
-            timestamp = dt_cest.isoformat() + "Z"
+        dt_cest = dt_utc + timedelta(hours=2)
+        timestamp = dt_cest.isoformat() + "Z"
 
 
-            lat_deg = int(parts[3][0:2])
-            lat_min = float(parts[3][2:7])
-            latitude = lat_deg + lat_min / 60.0
-            if parts[4] == 'S':
+        lat_deg = int(parts[3][0:2])
+        lat_min = float(parts[3][2:7])
+        latitude = lat_deg + lat_min / 60.0
+        if parts[4] == 'S':
                 latitude *= -1
 
-            lon_deg = int(parts[5][0:3])
-            lon_min = float(parts[5][3:])
-            longitude = lon_deg + lon_min / 60.0
-            if parts[6] == 'W':
+        lon_deg = int(parts[5][0:3])
+        lon_min = float(parts[5][3:])
+        longitude = lon_deg + lon_min / 60.0
+        if parts[6] == 'W':
                 longitude *= -1
 
-            speed_knots = float(parts[7])
+        speed_knots = float(parts[7])
 
-            return {
+        return {
+                'id': 3,  
                 'timestamp': timestamp,
                 'latitude': latitude,
                 'longitude': longitude,
-                'speed_knots': speed_knots,
+                'speedKnots': speed_knots,
             }
 
 
-        except Exception as e:
-            print('Error while parsing', e)
-            return None
+    except Exception as e:
+        print('Error while parsing', e)
+        return None
         
 
     # testString = "$GPRMC,121525.000,A,5537.8451,N,01204.6738,E,0.16,317.18,050525,,,A*63"
@@ -77,22 +82,27 @@ while True:
 
     # response = requests.post("URL til vores REST service her", data = serialized, headers = headersArray)
 
-    
-    while True: 
-        message, clientAddress = serverSocket.recvfrom(2048)
-        modfiedMessage = message.decode().upper()
-        parsed_data = parse_gprmc(modfiedMessage)
+
+while True: 
+    message, clientAddress = serverSocket.recvfrom(2048)
+    print("Received message:" + message.decode())
+    messageDecoded = message.decode()
+    modfiedMessage = messageDecoded.upper()
+    parsed_data = parse_gprmc(modfiedMessage)
 
 
-        if parsed_data:
-            try: 
-                response = requests.post("http://your-rest-endpoint/api/gps'", json=parsed_data, timeout=5)
+    if parsed_data:
+        try: 
+                response = requests.post("https://restredning20250504122455.azurewebsites.net/api/GPS", json=parsed_data, timeout=5)
             
                 print(f"Sent to REST API. Status: {response.status_code}")
-            except requests.RequestException as e:
+        except requests.RequestException as e:
                 print(f"Failed to send data to REST API: {e}")
-            except Exception as e:
+        except Exception as e:
                 print(f"Failed to send data to REST API: {e}")
+
+    
+  
     
     # print("Received message:" + message.decode())            
 
