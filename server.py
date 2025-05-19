@@ -95,7 +95,7 @@ while True:
         try: 
                 print(">> Parsed payload:", parsed_data)
 
-                response = requests.post("https://restredning20250504122455.azurewebsites.net/api/GPS", json=parsed_data, timeout=5)
+                response = requests.post("https://restredning20250504122455.azurewebsites.net/api/GPSNew", json=parsed_data, timeout=5)
             
                 print(f"Sent to REST API. Status: {response.status_code}")
         except requests.RequestException as e:
