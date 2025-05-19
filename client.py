@@ -16,6 +16,10 @@
 #             sock.sendto(line.encode(), (UDP_IP, UDP_PORT)) 
 
 
+
+# TEST CLIENT BELOW
+# ONLY FOR PC CLIENT TEST
+
 from socket import *
 import time
 
